@@ -1,7 +1,6 @@
 package com.example.serviceevent.Dto.Event;
 
 import com.example.serviceevent.enums.EventStatus;
-
 import java.time.LocalDate;
 
 public class EventShortDto {
@@ -9,18 +8,25 @@ public class EventShortDto {
     private Long id;
     private String title;
     private LocalDate date;
-    private String location;
     private EventStatus status;
+    private Long categoryId;
+    private Long venueId;
 
     public EventShortDto() {
     }
 
-    public EventShortDto(Long id, String title, LocalDate date, String location, EventStatus status) {
+    public EventShortDto(Long id,
+                         String title,
+                         LocalDate date,
+                         EventStatus status,
+                         Long categoryId,
+                         Long venueId) {
         this.id = id;
         this.title = title;
         this.date = date;
-        this.location = location;
         this.status = status;
+        this.categoryId = categoryId;
+        this.venueId = venueId;
     }
 
     // ---------- Getters & Setters ----------
@@ -49,19 +55,27 @@ public class EventShortDto {
         this.date = date;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public EventStatus getStatus() {
         return status;
     }
 
     public void setStatus(EventStatus status) {
         this.status = status;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Long getVenueId() {
+        return venueId;
+    }
+
+    public void setVenueId(Long venueId) {
+        this.venueId = venueId;
     }
 }
