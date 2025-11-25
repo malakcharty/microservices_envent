@@ -14,6 +14,7 @@
         <module>serviceevent</module>
         <module>discoveryservice</module>
         <module>gateway-service</module>
+        <module>config-server</module>
     </modules>
     <dependencyManagement>
         <dependencies>
