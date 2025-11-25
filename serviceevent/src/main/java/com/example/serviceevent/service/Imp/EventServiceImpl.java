@@ -6,6 +6,7 @@ import com.example.serviceevent.Dto.Event.EventShortDto;
 import com.example.serviceevent.Repositories.CategoryRepository;
 import com.example.serviceevent.Repositories.EventRepository;
 import com.example.serviceevent.Repositories.VenueRepository;
+import com.example.serviceevent.client.UserClient;
 import com.example.serviceevent.entities.Category;
 import com.example.serviceevent.entities.Event;
 import com.example.serviceevent.entities.Venue;
@@ -23,15 +24,19 @@ public class EventServiceImpl implements IEventService {
     private final CategoryRepository categoryRepository;
     private final VenueRepository venueRepository;
     private final EventMapper eventMapper;
+    private final UserClient userClient;
 
     public EventServiceImpl(EventRepository eventRepository,
                             CategoryRepository categoryRepository,
                             VenueRepository venueRepository,
-                            EventMapper eventMapper) {
+                            EventMapper eventMapper,
+                            UserClient userClient) {
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
         this.venueRepository = venueRepository;
         this.eventMapper = eventMapper;
+        this.userClient = userClient;
+
     }
 
     @Override
@@ -63,6 +68,15 @@ public class EventServiceImpl implements IEventService {
         event.setCategory(category);
         event.setVenue(venue);
 
+        // Vérifier que l’organisateur existe dans le microservice user
+        if (dto.getOrganizerId() != null) {
+            try {
+                userClient.getUserById(dto.getOrganizerId()); // Appel Feign
+            } catch (Exception e) {
+                throw new RuntimeException("Organizer not found with id " + dto.getOrganizerId());
+            }
+        }
+
         Event saved = eventRepository.save(event);
         return eventMapper.toReadDto(saved);
     }
@@ -83,7 +97,13 @@ public class EventServiceImpl implements IEventService {
 
         existing.setCategory(category);
         existing.setVenue(venue);
-
+        if (dto.getOrganizerId() != null) {
+            try {
+                userClient.getUserById(dto.getOrganizerId());
+            } catch (Exception e) {
+                throw new RuntimeException("Organizer not found with id " + dto.getOrganizerId());
+            }
+        }
         Event updated = eventRepository.save(existing);
 
         return eventMapper.toReadDto(updated);
