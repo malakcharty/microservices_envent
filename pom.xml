@@ -13,5 +13,18 @@
         <module>serviceuser</module>
         <module>serviceevent</module>
         <module>discoveryservice</module>
+        <module>gateway-service</module>
     </modules>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2023.0.3</version> <!-- ou la version de ton prof -->
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>
